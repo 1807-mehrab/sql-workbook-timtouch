@@ -76,3 +76,50 @@ ALTER TABLE InvoiceLine ADD CONSTRAINT FK_InvoiceLineInvoiceId
     
 DELETE CUSTOMER
     WHERE FIRSTNAME = 'Robert' AND LASTNAME = 'Walter';
+    
+/* 3 SQL FUNCTIONS */
+/* 3.1 System Defined Functions */
+/* Task – Create a function that returns the current time. */
+SELECT CURRENT_TIMESTAMP FROM SYS.dual;
+
+/* 3.2 System Defined Aggregate Functions */
+/* Task – create a function that returns the length of a mediatype from the mediatype table */
+SELECT NAME, LENGTH(NAME) FROM MEDIATYPE;
+
+/*  Task – Create a function that returns the most expensive track */
+SELECT NAME, UNITPRICE FROM TRACK
+    WHERE UNITPRICE = (SELECT MAX(UNITPRICE) FROM TRACK)
+    AND ROWNUM <= 1;
+
+/* 3.3 User Defined Scalar Functions */
+/* User Defined Scalar Functions */
+/* Task – Create a function that returns the average price of invoiceline items in the invoiceline table */
+
+
+
+
+/* 7. JOIN */
+/* 7.1 INNER */
+/* Task – Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId. */
+SELECT CUSTOMER.LASTNAME || ', ' || CUSTOMER.FIRSTNAME AS NAME, INVOICEID FROM CUSTOMER INNER JOIN INVOICE
+ON CUSTOMER.CUSTOMERID = INVOICE.CUSTOMERID;
+
+/* 7.2 OUTER */
+/* Task – Create an outer join that joins the customer and invoice table, specifying the CustomerId, firstname, lastname, invoiceId, and total. */
+SELECT CUSTOMER.CUSTOMERID, CUSTOMER.FIRSTNAME, CUSTOMER.LASTNAME, INVOICEID, TOTAL FROM CUSTOMER FULL OUTER JOIN INVOICE
+ON CUSTOMER.CUSTOMERID = INVOICE.CUSTOMERID;
+
+/* 7.3 RIGHT */
+/* Task – Create a right join that joins album and artist specifying artist name and title. */
+SELECT ARTIST.NAME, ALBUM.TITLE FROM ARTIST RIGHT OUTER JOIN ALBUM
+ON ARTIST.ARTISTID = ALBUM.ARTISTID;
+
+/* 7.4 CROSS */
+/* Task – Create a cross join that joins album and artist and sorts by artist name in ascending order. */
+SELECT * FROM ARTIST CROSS JOIN ALBUM
+ORDER BY ARTIST.NAME;
+
+/* 7.5 SELF */
+/* Task – Perform a self-join on the employee table, joining on the reportsto column. */
+SELECT supervised.FIRSTNAME || ' ' || supervised.LASTNAME AS EMPLOYEE, supervisor.FIRSTNAME || ' ' || supervisor.LASTNAME AS REPORTSTO  FROM EMPLOYEE supervised, EMPLOYEE supervisor
+WHERE supervised.REPORTSTO = supervisor.EMPLOYEEID;
